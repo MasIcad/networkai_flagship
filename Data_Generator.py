@@ -117,4 +117,4 @@ np.save('y_train_do.npy', y_do[:split])
 np.save('X_test_do.npy', X_do[split:])
 np.save('y_test_do.npy', y_do[split:])
 
-print(f"\n[SUKSES] Seluruh berkas biner diperbarui secara ilmiah dengan total {n_data} baris!")
+print(f"\n[SUKSES] Seluruh berkas biner diperbarui secara ilmiah dengan total {n_data} baris.")
