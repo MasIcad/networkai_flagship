@@ -11,9 +11,9 @@ CRITICAL_ATAS_PH = 8.5
 
 # 2. Load Model dan Scaler Hasil Ekstraksi Pembuat Data
 print("⏳ Mengunduh arsitektur model pintar ke memori RAM Jetson...")
-model_suhu = tf.keras.models.load_model('best_model_suhu.h5')
-model_ph = tf.keras.models.load_model('best_model_ph.h5')
-model_do = tf.keras.models.load_model('best_model_do.h5')
+model_suhu = tf.keras.models.load_model('best_model_suhu.h5', compile=False)
+model_ph = tf.keras.models.load_model('best_model_ph.h5', compile=False)
+model_do = tf.keras.models.load_model('best_model_do.h5', compile=False)
 
 scaler_suhu = joblib.load('scaler_suhu.pkl')
 scaler_ph = joblib.load('scaler_ph.pkl')
@@ -58,23 +58,25 @@ try:
         in_do = scaler_do.transform(np.array(buffer_do).reshape(-1, 1)).reshape(1, lookback, 1)
 
         # 5. Eksekusi Inferensi AI (Prediksi 30 Langkah / 5 Menit ke depan)
-        pred_suhu_t30 = scaler_suhu.inverse_transform(model_suhu.predict(in_suhu, verbose=0))[0][0]
-        pred_ph_t30 = scaler_ph.inverse_transform(model_ph.predict(in_ph, verbose=0))[0][0]
-        pred_do_t30 = scaler_do.inverse_transform(model_do.predict(in_do, verbose=0))[0][0]
+        pred_suhu_t10 = scaler_suhu.inverse_transform(model_suhu.predict(in_suhu, verbose=0))[0][0]
+        pred_ph_t10 = scaler_ph.inverse_transform(model_ph.predict(in_ph, verbose=0))[0][0]
+        pred_do_t10 = scaler_do.inverse_transform(model_do.predict(in_do, verbose=0))[0][0]
 
         # Kalkulasi Margin Deviasi Residu Kejut
-        residu_do = abs(val_do - pred_do_t30)
-        residu_ph = abs(val_ph - pred_ph_t30)
+        residu_do = abs(val_do - pred_do_t10)
+        residu_ph = abs(val_ph - pred_ph_t10)
+        residu_suhu = abs(val_suhu - pred_suhu_t10)
 
         # 6. Evaluasi Indikator Bahaya/Anomali Berdasarkan Prediksi & Residu
-        anomali_do = (residu_do > THRESHOLD_RESIDU_DO) or (pred_do_t30 < CRITICAL_BAWAH_DO)
-        anomali_ph = (residu_ph > THRESHOLD_RESIDU_PH) or (pred_ph_t30 > CRITICAL_ATAS_PH)
+        anomali_do = (residu_do > THRESHOLD_RESIDU_DO) or (pred_do_t10 < CRITICAL_BAWAH_DO)
+        anomali_ph = (residu_ph > THRESHOLD_RESIDU_PH) or (pred_ph_t10 > CRITICAL_ATAS_PH)
+        anomali_suhu = (residu_suhu > 1.5)  # Contoh ambang batas suhu, bisa disesuaikan
 
         # 7. Cetak Konsol Monitoring Output Secara Bersih
         print(f"\n📊 [REAL-TIME (T)]  Suhu: {val_suhu:.2f}°C | pH: {val_ph:.2f} | DO: {val_do:.2f} mg/L")
-        print(f"🔮 [PREDIKSI (T+30)] Suhu: {pred_suhu_t30:.2f}°C | pH: {pred_ph_t30:.2f} | DO: {pred_do_t30:.2f} mg/L")
-        print(f"📉 [MARGIN RESIDU]  Residu pH: {residu_ph:.3f} | Residu DO: {residu_do:.3f}")
-        print(f"⚠️ [INDIKASI SISTEM] Oksigen (DO): {'❌ ANOMALI DETECTED' if anomali_do else '✅ AMAN'} | Kadar Asam (pH): {'❌ ANOMALI DETECTED' if anomali_ph else '✅ AMAN'}")
+        print(f"🔮 [PREDIKSI (T+10)] Suhu: {pred_suhu_t10:.2f}°C | pH: {pred_ph_t10:.2f} | DO: {pred_do_t10:.2f} mg/L")
+        print(f"📉 [MARGIN RESIDU]  Residu pH: {residu_ph:.3f} | Residu DO: {residu_do:.3f} | Residu Suhu: {residu_suhu:.3f}")
+        print(f"⚠️ [INDIKASI SISTEM] Oksigen (DO): {'❌ ANOMALI DETECTED' if anomali_do else '✅ AMAN'} | Kadar Asam (pH): {'❌ ANOMALI DETECTED' if anomali_ph else '✅ AMAN'} | Suhu: {'❌ ANOMALI DETECTED' if anomali_suhu else '✅ AMAN'}")
 
 except KeyboardInterrupt:
     print("\n👋 Sistem dihentikan dengan aman. Keluar dari lingkungan Jetson.")

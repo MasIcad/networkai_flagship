@@ -44,7 +44,7 @@ for name, (X_train, y_train) in targets.items():
     
     # Catatan Jetson Nano: Set 3-5 epoch saja jika ingin training langsung di dev-board, 
     # atau biarkan 100 jika Anda me-running file ini di laptop/Colab terpisah.
-    model.fit(X_train, y_train, epochs=5, batch_size=128, verbose=1, callbacks=callbacks)
+    model.fit(X_train, y_train, epochs=100, batch_size=128, verbose=1, callbacks=callbacks)
     
     model.save(f'best_model_{name}.h5')
     print(f"✅ Model 'best_model_{name}.h5' sukses diamankan.")

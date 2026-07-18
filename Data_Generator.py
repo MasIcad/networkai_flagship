@@ -83,9 +83,9 @@ joblib.dump(scaler_ph, 'scaler_ph.pkl')
 joblib.dump(scaler_do, 'scaler_do.pkl')
 
 # ==========================================
-# 3. WINDOWING (HORIZON T+30 MENIT KE DEPAN)
+# 3. WINDOWING (HORIZON T+10 MENIT KE DEPAN)
 # ==========================================
-lookback, horizon = 60, 30
+lookback, horizon = 60, 10
 
 def create_sequences(data, lookback, horizon):
     X, y = [], []

@@ -13,9 +13,9 @@ X_test_do = np.load('X_test_do.npy')
 y_test_do = np.load('y_test_do.npy')
 
 # Load Model dan Scaler
-model_suhu = tf.keras.models.load_model('best_model_suhu.h5')
-model_ph = tf.keras.models.load_model('best_model_ph.h5')
-model_do = tf.keras.models.load_model('best_model_do.h5')
+model_suhu = tf.keras.models.load_model('best_model_suhu.h5', compile=False)
+model_ph = tf.keras.models.load_model('best_model_ph.h5', compile=False)
+model_do = tf.keras.models.load_model('best_model_do.h5', compile=False)
 
 scaler_suhu = joblib.load('scaler_suhu.pkl')
 scaler_ph = joblib.load('scaler_ph.pkl')
@@ -37,21 +37,21 @@ fig.suptitle('Dashboard Multi-Parameter MISO - Analisis Respon Jaringan CNN-LSTM
 
 # Subplot Suhu
 axs[0].plot(act_suhu, color='black', alpha=0.3, label='Aktual')
-axs[0].plot(pred_suhu, color='red', linestyle='--', label='Prediksi AI (T+30)')
+axs[0].plot(pred_suhu, color='red', linestyle='--', label='Prediksi AI (T+10)')
 axs[0].set_ylabel('Suhu (°C)', fontweight='bold')
 axs[0].grid(True, alpha=0.2)
 axs[0].legend(loc='upper right')
 
 # Subplot pH
 axs[1].plot(act_ph, color='black', alpha=0.3, label='Aktual')
-axs[1].plot(pred_ph, color='green', linestyle='--', label='Prediksi AI (T+30)')
+axs[1].plot(pred_ph, color='green', linestyle='--', label='Prediksi AI (T+10)')
 axs[1].set_ylabel('pH', fontweight='bold')
 axs[1].grid(True, alpha=0.2)
 axs[1].legend(loc='upper right')
 
 # Subplot DO
 axs[2].plot(act_do, color='black', alpha=0.3, label='Aktual')
-axs[2].plot(pred_do, color='blue', linestyle='--', label='Prediksi AI (T+30)')
+axs[2].plot(pred_do, color='blue', linestyle='--', label='Prediksi AI (T+10)')
 axs[2].set_ylabel('DO (mg/L)', fontweight='bold')
 axs[2].set_xlabel('Indeks Titik Data Uji (Resolusi 10 Detik)', fontweight='bold')
 axs[2].grid(True, alpha=0.2)
