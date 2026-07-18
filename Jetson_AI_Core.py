@@ -28,7 +28,7 @@ LIMIT_ATAS_PH  = 8.5
 LIMIT_BAWAH_PH = 6.5    
 LIMIT_ATAS_SUHU = 32.0
 
-print("🚀 Engine CNN-LSTM Siap. Menunggu data dari live_telemetry.csv...")
+print("CNN-LSTM Siap. Menunggu data dari live_telemetry.csv...")
 
 def run_ai_inference():
     tf.keras.backend.clear_session()
@@ -40,7 +40,7 @@ def run_ai_inference():
     try:
         df = pd.read_csv(CSV_PATH)
         if len(df) < lookback:
-            print(f"⏳ Data belum cukup. Butuh {lookback} baris, saat ini baru ada {len(df)} baris.")
+            print(f"Data belum cukup. Butuh {lookback} baris, saat ini baru ada {len(df)} baris.")
             return
             
         recent_data = df.tail(lookback)
