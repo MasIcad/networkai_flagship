@@ -17,14 +17,14 @@ with open(CSV_PATH, mode='w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(['TIMESTAMP', 'SUHU', 'PH', 'DO'])
     
-    for t in range(60):
+    for t in range(20):
         ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         suhu = 27.5 + 2.5 * np.sin(2 * np.pi * (t - 480) / 1440) + np.random.normal(0, 0.01)
         ph = 7.4 + 0.4 * np.sin(2 * np.pi * (t - 570) / 1440) + np.random.normal(0, 0.005)
         do = 7.8 + 1.5 * np.sin(2 * np.pi * (t - 570) / 1440) + np.random.normal(0, 0.01)
         writer.writerow([ts, suhu, ph, do])
 
-step = 60
+step = 20
 try:
     while True:
         step += 1

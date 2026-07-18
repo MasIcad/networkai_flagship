@@ -5,7 +5,7 @@ from keras.layers import Conv1D, MaxPooling1D, LSTM, Dense, Dropout, BatchNormal
 from keras.optimizers import Adam
 from keras.callbacks import EarlyStopping
 
-lookback = 60
+lookback = 20
 
 # 1. Load Data Fisik .npy
 print("⏳ Memuat data biner dari penyimpanan lokal...")

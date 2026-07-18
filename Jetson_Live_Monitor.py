@@ -19,7 +19,7 @@ scaler_suhu = joblib.load(os.path.join(BASE_DIR, 'scaler_suhu.pkl'))
 scaler_ph = joblib.load(os.path.join(BASE_DIR, 'scaler_ph.pkl'))
 scaler_do = joblib.load(os.path.join(BASE_DIR, 'scaler_do.pkl'))
 
-lookback = 60
+lookback = 20
 THRESHOLD_RESIDU_DO = 0.8
 THRESHOLD_RESIDU_PH = 0.3
 

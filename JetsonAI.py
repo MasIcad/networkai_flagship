@@ -20,8 +20,8 @@ scaler_ph = joblib.load('scaler_ph.pkl')
 scaler_do = joblib.load('scaler_do.pkl')
 print("🟢 Sistem Utama Mengudara! Seluruh Model AI Siap Mengeksekusi.")
 
-# 3. Inisialisasi Sliding Window Buffer (Lookback=60 data / 10 menit ke belakang)
-lookback = 60
+# 3. Inisialisasi Sliding Window Buffer (Lookback=20 data / 10 menit ke belakang)
+lookback = 20
 buffer_suhu = collections.deque(maxlen=lookback)
 buffer_ph = collections.deque(maxlen=lookback)
 buffer_do = collections.deque(maxlen=lookback)
